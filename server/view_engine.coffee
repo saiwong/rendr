@@ -9,7 +9,7 @@ exports.engine = (viewPath, data, callback) ->
   layoutData = _.extend {}, data,
     body: getViewHtml(viewPath, data.locals, data.app)
     appData: data.app.toJSON()
-    bootstrappedData: getBootstrappedData(data.locals)
+    bootstrappedData: getBootstrappedData(app, data.locals)
     _app: data.app
 
   renderWithLayout(layoutData, callback)
@@ -46,15 +46,14 @@ getViewHtml = (viewPath, locals, app) ->
   view.getHtml()
 
 
-getBootstrappedData = (locals) ->
-  fetcher = require('../shared/fetcher')
+getBootstrappedData = (app, locals) ->
   modelUtils = require('../shared/model_utils')
 
   bootstrappedData = {}
   for own name, modelOrCollection of locals
     if modelUtils.isModel(modelOrCollection) or modelUtils.isCollection(modelOrCollection)
       bootstrappedData[name] =
-        summary: fetcher.summarize(modelOrCollection)
+        summary: app.fetcher.summarize(modelOrCollection)
         data: modelOrCollection.toJSON()
 
   bootstrappedData

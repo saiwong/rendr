@@ -1,6 +1,5 @@
 templateFinder = require('../template_finder')
 model_utils = require('../model_utils')
-fetcher = require('../fetcher')
 
 noop = ->
 
@@ -148,7 +147,7 @@ module.exports = class BaseView extends Backbone.View
           params: params
 
     @setLoading(true)
-    fetcher.fetch fetchSpec, (err, results) =>
+    @app.fetcher.fetch fetchSpec, (err, results) =>
       @setLoading(false)
       return console.log "FETCH ERR: #{err}" if err
 
@@ -194,7 +193,7 @@ module.exports = class BaseView extends Backbone.View
         params: @options.collection_params
 
     if !_.isEmpty(fetchSummary)
-      results = fetcher.hydrate(fetchSummary, {app: @app})
+      results = @app.fetcher.hydrate(fetchSummary, {app: @app})
       @parseOptions(results)
 
   setLoading: (loading) ->

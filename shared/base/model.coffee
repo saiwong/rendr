@@ -30,7 +30,7 @@ module.exports = class Base extends Backbone.Model
   # Or not, because there could be a one-to-many mapping?
   # Or should it only exist in one?
   updateInModelStore: =>
-    getFetcher().modelStore.set @constructor.name, @
+    @app.fetcher.modelStore.set @constructor.name, @
 
   # Idempotent parse
   parse: (resp) ->
@@ -47,7 +47,7 @@ module.exports = class Base extends Backbone.Model
 
   # Instance method to store in the modelStore.
   store: ->
-    getFetcher().modelStore.set @constructor.name, @
+    @app.fetcher.modelStore.set @constructor.name, @
 
   # Class method to get a model instance from the modelStore.
   @fetchFromCache: (id) ->
